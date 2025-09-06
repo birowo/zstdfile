@@ -10,9 +10,15 @@ import (
 
 const Path = "zstd"
 
-func Name(name string) string {
+func Name(name string) (name_ string) {
 	slash := strings.LastIndexByte(name, '/')
-	return name[:slash] + "/" + Path + name[slash:]
+	if slash == -1 {
+		slash = strings.LastIndexByte(name, '\\')
+	}
+	if slash != -1 {
+		name_ = name[:slash] + "/" + Path + name[slash:]
+	}
+	return
 }
 func Encode(name, zstdName string) {
 	src, err := os.ReadFile(name)
